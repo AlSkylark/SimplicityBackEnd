@@ -1,0 +1,97 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+.card{ width: 70%; }
+
+.content{
+    display: grid; 
+    grid-template-columns: repeat(autofit, 1fr); 
+    gap: 0px 0px; 
+    grid-template-areas: 
+      "id id"
+      "comic thumbnail"
+      "caption caption"
+      "save save"; 
+}
+
+.rtl{
+    direction: rtl;
+}
+
+.id { grid-area: id; }
+.idIcon{ 
+    cursor: pointer; 
+    user-select: none; 
+}
+.comic { grid-area: comic; }
+.thumbnail { grid-area: thumbnail; }
+.caption { grid-area: caption; }
+.alt { grid-area: alt; }
+.save { 
+    grid-area: save;
+    justify-self: center;
+}
+
+.image{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: -10px;
+}
+
+.image.comic{ margin-right: 10px; }
+.image.thumbnail{ margin-left: 10px; }
+
+.image mat-form-field{ width: 100%; }
+
+.imgWrap{ margin-bottom: 15px; }
+
+.imgTitle{
+    position: relative;
+    text-align: center;
+    max-width: 80px;
+    top: 10px;
+    left: 8px;
+    background-color: white;
+}
+
+.img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px rgb(224, 224, 224);
+    border-radius: 4px;
+    padding: 5px;
+    height: auto;
+}
+.imgImg{
+    max-height: 550px;
+}
+
+.imgUpload button{
+    width: 80px;
+    height: 80px;
+    margin: 20px;
+}
+
+.btn{ margin: 5px; }
+
+@media only screen and (max-width: 1200px) {
+    .content{
+        grid-template-columns: 1fr 1fr; 
+        gap: 0px 0px; 
+        grid-template-areas: 
+          "id id"
+          "comic comic"
+          "thumbnail thumbnail"
+          "caption caption"
+          "save save"; 
+    }
+    .card{ width: 90%; }
+    .imgImg{
+        max-height: 300px;
+    }
+}

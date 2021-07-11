@@ -1,0 +1,82 @@
+<div class="container">
+    
+    <mat-card class="card">
+        <mat-card-title>Page {{pageNumber}}</mat-card-title>
+        
+        <form [formGroup]="pageForm">
+        <mat-card-content class="content">
+            
+            <mat-form-field appearance="outline" class="id">
+                <mat-label>Id</mat-label>
+                <input matInput formControlName="id" value="{{page.id}}">
+                <mat-icon class="idIcon" matSuffix (click)="enableId()">{{idIcon}}</mat-icon>
+            </mat-form-field>
+
+            <div class="image comic">
+                <div class="imgWrap">
+                    <div class="imgTitle">Image</div>
+                    <div class="img">
+                        <div *ngIf="!page.imgurl" class="imgUpload">
+                            <button  mat-flat-button color="primary" (click)="openUpload('Image')">
+                                <mat-icon>file_upload</mat-icon>
+                            </button>
+                            <mat-progress-bar *ngIf="isUploading" mode="determinate" value="{{progress | async}}"></mat-progress-bar>
+                        </div>
+
+                        <mat-spinner *ngIf="page.imgurl && imgLoading"></mat-spinner>
+                        <img *ngIf="page.imgurl" [hidden]="imgLoading" (load)="imgLoading = false" (click)="openUpload('Image')" class="imgImg" src="{{page.imgurl}}" alt="{{page.alt}}">
+                    </div> 
+                </div>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Image URL</mat-label>
+                    <input class="rtl" matInput formControlName="imgurl" value="{{page.imgurl}}">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="alt">
+                    <mat-label>Alt</mat-label>
+                    <input matInput formControlName="alt" value="{{page.alt}}">
+                </mat-form-field>
+            </div>
+
+            <div class="image thumbnail">
+                <div class="imgWrap">
+                    <div class="imgTitle">Thumbnail</div>
+                    <div class="img">
+                        <div *ngIf="!page.thumbnail" class="imgUpload">
+                            <button mat-flat-button color="primary" (click)="openUpload('Thumbnail')">
+                                <mat-icon>file_upload</mat-icon>
+                            </button>
+                            <mat-progress-bar *ngIf="isThumbUploading" mode="determinate" value="{{thumbprogress | async}}"></mat-progress-bar>
+                        </div>
+                        <mat-spinner *ngIf="page.thumbnail && thumbLoading"></mat-spinner>
+                        <img *ngIf="page.thumbnail" [hidden]="thumbLoading" (load)="thumbLoading = false" (click)="openUpload('Thumbnail')" src="{{page.thumbnail}}" alt="{{page.alt}}">
+                    </div> 
+                </div>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Thumbnail URL</mat-label>
+                    <input matInput class="rtl" formControlName="thumbnail" value="{{page.thumbnail}}">
+                </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="caption">
+                <mat-label>Caption</mat-label>
+                <textarea matInput formControlName="caption">{{page.caption}}</textarea>
+            </mat-form-field>
+        
+
+
+
+            <div class="save">
+                <button mat-raised-button color="primary" class="btn" (click)="updatePage()">Update</button>
+                <button mat-stroked-button color= "warn" class="btn">Cancel</button>
+            </div>
+
+        </mat-card-content>
+
+    </form>
+
+    </mat-card>
+
+</div>

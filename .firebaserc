@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "simplicitywebapp": {
+      "hosting": {
+        "simplicitybackend": [
+          "adminsimplicitycomic"
+        ]
+      }
+    }
+  }
+}

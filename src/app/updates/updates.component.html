@@ -1,0 +1,19 @@
+<div class="container">
+    <mat-card *ngFor="let chapter of chapters | async" class="chapters" > 
+        
+        <mat-card-title class="title" >
+             <div class="title-text" (click)="chapterClick(chapter.name)">{{chapter.name}}</div>
+             <button mat-mini-fab color="basic">
+             <mat-icon class="title-add">add</mat-icon> 
+             </button>
+        </mat-card-title> 
+        
+        <mat-card-content *ngIf="chpsVisible.get(chapter.name)" class="content">
+            <div class="wrap-for-list">
+                <button mat-flat-button color="basic" *appRepeat="[chapter.start, chapter.length]; let i" class="list" (click)=pagesClick(i)>
+                    {{i}}
+                </button>
+            </div> 
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Upload {{data.button}}</h2>
+
+<mat-dialog-content>
+    <mat-form-field appearance="outline" floatLabel="never">
+        <mat-label>Select your file</mat-label>
+        <input matInput (click)="openDialog()" value="{{imgPath}}">
+        <button mat-raised-button matSuffix color="accent" class="selectBtn" (click)="openDialog()"> Browse... </button>
+        <input #file hidden type="file" accept="image/png" (change)="copyPath($event)">
+    </mat-form-field>
+    
+    <mat-checkbox #thumb *ngIf="data.button=='Image'" class="thumbnail" (click)="checkChange()" [checked] = "true" value="{{thumbCheck}}">Upload a thumbnail of the image as well?</mat-checkbox>
+</mat-dialog-content>
+<br>
+<mat-dialog-actions>
+    <button mat-raised-button [mat-dialog-close]="dialogData" color="primary">
+        Upload
+    </button>
+    <button mat-stroked-button color="warn" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

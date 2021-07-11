@@ -1,0 +1,32 @@
+$primary: #3f51b5;
+
+.login-container{
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    height: 100%;
+    background-color: $primary;
+}
+
+.g{
+    width: 30px;
+}
+mat-card{
+    height: 250px;
+}
+.card{
+    margin: 3%;
+    flex: 0 1 100%;
+    // min-width: auto;
+    max-width: 250px;
+}
+
+mat-card-content{
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+mat-card-content button{
+    margin-top: 10px;
+}

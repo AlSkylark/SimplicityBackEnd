@@ -1,0 +1,45 @@
+<mat-toolbar color="primary" class="topbar">
+    <div class="topbar-item">
+        <button mat-icon-button (click)="toggle=!toggle">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+
+    <div class="topbar-item">Simplicity Admin Panel</div>
+    <div class="spacer"></div>
+    <div class="topbar-item right">
+        <!-- NEED TO LOG OUT! -->
+        <button *ngIf="auth.logged" mat-icon-button (click)="auth.logout()">
+            <mat-icon>logout</mat-icon> 
+        </button>
+        <button *ngIf="!auth.logged" mat-icon-button (click)="auth.login()">
+            <mat-icon>login</mat-icon> 
+        </button>
+    </div>
+
+</mat-toolbar>
+<mat-sidenav-container>
+    
+    <mat-sidenav mode="side" [(opened)]="toggle">
+        <mat-list>
+            <div *ngFor="let item of items" class="menu-wrap">
+                <mat-list-item > 
+                    <button mat-button class="list-button" (click)="navigateTo(item.Link)">
+                    <div class="list-item">
+                        <mat-icon class="material-icons-outlined" color="primary">{{item.Icon}}</mat-icon> 
+                        <div class="item-title">{{item.Name}}</div>
+                    </div>
+                    </button>
+                </mat-list-item>
+    
+                <mat-divider></mat-divider>
+            </div>
+        </mat-list>
+    </mat-sidenav>
+
+    <!-- The main content of the page -->
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+
+</mat-sidenav-container>

@@ -1,0 +1,23 @@
+<div class="status-container">
+    <div class="card">
+    <mat-card>
+        <mat-card-header>
+            <div mat-card-avatar class="avatar"></div>
+            <mat-card-title>Overview</mat-card-title>
+            <mat-card-subtitle>Status of Updates/Logs/Chapters</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <mat-list>
+                <mat-list-item>Updates: {{updates | async}}</mat-list-item>
+                <mat-list-item>Logs: {{logs | async}}</mat-list-item>
+                <mat-list-item>Chapters: {{chapters | async}}</mat-list-item>
+            </mat-list>
+        </mat-card-content>
+
+        <mat-card-footer>Last Updated: {{date}}</mat-card-footer>
+    </mat-card>
+    </div>
+</div>
+<mat-divider></mat-divider>
+

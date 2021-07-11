@@ -1,0 +1,72 @@
+.wrapper{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.insidewrap{
+    width: 80%;
+}
+
+.title{
+    text-align: center;
+}
+
+.underline{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 5px;
+    border-bottom: solid 1px #eee;
+    width: 40%;
+}
+
+.chapters{
+    margin-top: 10px;
+    text-align: center;
+    background-color: rgb(245, 245, 245);
+    border-radius: 5px;
+    box-shadow: rgb(184, 184, 184) 2px 2px 3px -2px;
+    padding: 7px;
+}
+.pcontainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 6px;
+}
+.pcontainer a{
+    text-decoration: none;
+    color: black;
+}
+
+.ctitle{
+    cursor: pointer;
+}
+
+.pages {
+    background-color: white;
+    border-radius: 3px;
+    padding: 2px;
+    margin-top: 3px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-bottom: 3px;
+    width: 60px;
+    box-shadow: rgb(184, 184, 184) 1px 1px 3px -2px;
+    transition: transform .1s;
+    cursor: pointer;
+    /* antialiasing */
+    outline: 1px solid transparent;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+    
+
+}
+.pages:hover{
+    transform: scale(1.05);
+}

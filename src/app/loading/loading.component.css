@@ -1,0 +1,70 @@
+  #Layer_2{
+    position: absolute;
+    top:-5%;
+    transform:scale(50%);
+  }
+  .path {
+    fill: transparent;
+    stroke: black;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-dasharray: 274;
+    stroke-dashoffset: 274;
+    animation: dash;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -273;
+    }
+  }
+  
+  .heartp {
+      stroke: black;
+      stroke-width: 2px;
+      fill: transparent;
+      stroke-linecap: round;
+      stroke-dasharray: 157;
+      stroke-dashoffset: 157;
+      animation: heartp;
+      animation-duration: 3.5s;
+      animation-iteration-count: infinite;
+      animation-direction: reverse;
+      animation-timing-function: ease-in-out;
+  }
+
+  @keyframes heartp {
+    to {
+      stroke-dashoffset: -156;
+    }
+  }
+
+  .eye{
+    stroke: black;
+    stroke-width: 1px;
+    fill: transparent;
+    stroke-linecap: round;
+    stroke-dasharray: 2;
+    stroke-dashoffset: 0;
+    animation: eye;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: reverse;
+    animation-timing-function: linear;
+  }
+  @keyframes eye{
+      100%{
+        stroke-dashoffset: 4;
+      }
+  }
+
+  .cls-1 {
+    fill:transparent;
+  }
+  .heartinside{
+      fill:transparent;
+  }

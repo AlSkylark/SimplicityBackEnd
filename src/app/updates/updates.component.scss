@@ -1,0 +1,56 @@
+$primary: #3f51b5;
+
+.container{
+    margin-left: 10%;
+    width: 70%;
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chapters{
+    width: 100%;
+    text-align: center;
+    color: white;
+    background-color: $primary;
+    margin: 8px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    cursor: pointer;
+}
+.title-text{
+    flex: 1 0 auto;
+}
+.title-add{
+    flex: 0 0 auto;
+}
+.wrap-for-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 35px;
+    margin: 2px 5px;
+    padding: 5px 10px;
+}
+.list:hover{
+    transform: scale(1.1);
+}

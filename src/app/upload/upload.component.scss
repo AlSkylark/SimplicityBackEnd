@@ -1,0 +1,12 @@
+mat-dialog-content{
+    display: flex;
+    flex-direction: column;
+}
+.selectBtn{
+    position: relative;
+    top: -7px;
+}
+
+mat-dialog-actions button{
+    margin: 5px;
+}

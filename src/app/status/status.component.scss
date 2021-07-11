@@ -1,0 +1,23 @@
+.status-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+.card{
+    margin: 3%;
+    flex: 0 1 100%;
+    // min-width: auto;
+    max-width: 400px;
+}
+mat-divider{
+    margin-top: 10px;
+}
+
+.avatar{
+    background-image: url('/assets/ico.png');
+    background-repeat: round;
+    background-size: cover;
+}
+mat-card-footer{
+    text-align: center;
+}
