@@ -13,6 +13,7 @@ export class UpdatesComponent implements OnInit {
   public chpsVisible: Map<string, boolean> = new Map();
   public pagesVisible: Map<number, boolean> = new Map();
   public chapters: Observable<any>;
+  public pages: Observable<any>;
 
   constructor(private db: DatabaseService, private router: Router) { 
     this.chapters = this.db.getChapters();
@@ -21,6 +22,8 @@ export class UpdatesComponent implements OnInit {
         this.chpsVisible.set(el['name'], false);  
       });
     })
+    this.pages = this.db.getAllUpdates();
+    
   }
 
   ngOnInit(): void {

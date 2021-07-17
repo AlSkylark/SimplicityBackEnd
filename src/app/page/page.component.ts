@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DatabaseService } from '../database.service';
 import { ImageToResize } from '../image-to-resize';
 import { Update } from '../update';
 import { UploadComponent } from '../upload/upload.component';
 import { UploadingImage } from '../uploading-image';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-page',
@@ -18,9 +19,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class PageComponent implements OnInit {
   
+  public pageTitle: string;
   public pageForm: FormGroup;
   public pageNumber: string;
-  public page: Update = {};
+  public lastPage: number;
+  public page: Update = new Update();
+  
 
   //image
   public isUploading: boolean = false;
@@ -34,31 +38,85 @@ export class PageComponent implements OnInit {
   public thumbUrl: AngularFireStorageReference;
   public thumbLoading: boolean = true;
 
+  //chapters
+  public chapterList: Observable<any[]>;
+  public selected: string;
+
   //if id needs editing
   public idIcon: string = 'edit';
 
   //if the route is /add
 
-  constructor(private route: ActivatedRoute, 
+  constructor(private route: ActivatedRoute,
+              private router: Router, 
               private db: DatabaseService, 
               private dialog: MatDialog,
               private popUp: MatSnackBar,
               private fb: FormBuilder) {
-
-    this.route.params.subscribe((page: Params) =>{
-      this.pageNumber = page['page'];
-      this.db.getPage(+this.pageNumber).subscribe(p => this.page = p[0]);
-    });
-
-    this.pageForm = this.fb.group({
-      alt: '',
-      caption: '',
-      id: {value: '', disabled: true},
-      imgurl: {value: '', disabled: true},
-      thumbnail: {value: '', disabled: true}
-    });
     
+    this.chapterList = this.db.getChapters();
+    
+    this.db.getLast().subscribe(v =>{
+      this.lastPage = v[0].id;
+    })
+    
+    this.route.params.subscribe((page: Params) =>{
+      
+      this.pageNumber = page['page'];
+
+      this.pageForm = this.fb.group({
+        alt: '',
+        caption: '',
+        chapter: 'none',
+        id: {value: '', disabled: true},
+        imgurl: {value: '', disabled: true},
+        thumbnail: {value: '', disabled: true}
+      });
+      
+
+
+      if (this.pageNumber == 'add'){
+        
+        this.pageTitle = 'Add Page';
+        this.db.getLast().pipe(take(1)).subscribe(v => {
+
+          this.page.id = v[0].id + 1;
+          //this.pageForm.get('id').enable();
+
+          //we create a new empty entry and subscribe to it
+          const pageGot$ = this.db.newPage(this.page.id);
+
+          pageGot$.pipe(take(1)).subscribe(p => {
+            this.setForm(p);
+          })
+
+          pageGot$.subscribe(p => this.page = p);
+
+        });
+
+      } else {
+        this.pageTitle = 'Page ' + this.pageNumber;
+        
+        const pageGot$ = this.db.getPage(+this.pageNumber);
+        
+        pageGot$.subscribe(p => {
+          this.page = p;
+          this.setForm(p);
+        }); //loads data to page
+        
+      }
+    });
    }
+
+
+  setForm(p: Update){
+    this.pageForm.controls['id'].setValue(p.id == undefined ? '' : p.id); 
+    this.pageForm.controls['alt'].setValue(p.alt == undefined ? '' : p.alt);
+    this.pageForm.controls['caption'].setValue(p.caption == undefined ? '' : p.caption);
+    this.pageForm.controls['chapter'].setValue(p.chapter == undefined ? 'none' : p.chapter);
+    this.pageForm.controls['imgurl'].setValue(p.imgurl == undefined ? '' : p.imgurl);
+    this.pageForm.controls['thumbnail'].setValue(p.thumbnail == undefined ? '' : p.thumbnail);
+  }
 
   ngOnInit(): void {
   }
@@ -69,6 +127,7 @@ export class PageComponent implements OnInit {
     else this.idIcon = 'edit';
   }
 
+  //#region upload Images code
   /**
    * This function is the core function governing how Images and Thumbnails are updated to the database.
    * In essence, it opens an Angular Material dialog component, where the user chooses the image to send,
@@ -113,7 +172,10 @@ export class PageComponent implements OnInit {
         //I'm writing the function now to be called within the if statements
         const thumbnailAction = () => 
         {
-          this.isThumbUploading = true;
+          
+          this.db.deleteImage(this.page.id, 'thumbnail').finally(() => 
+            this.isThumbUploading = true
+          );
           //we POST to the ResizeAPI asking for a thumbnail back.
           this.db.getThumbnail(thumb).subscribe(val =>
           {
@@ -141,7 +203,10 @@ export class PageComponent implements OnInit {
         } else
         {
           //same as the thumbnail process but skipping the ResizeAPI request
-          this.isUploading = true;
+          
+          this.db.deleteImage(this.page.id, 'imgurl').finally(() =>
+            this.isUploading = true
+          );
           const upload: UploadingImage = this.db.uploadImageToBucket(this.page.id, result.file);
           
           //Important! If the checkbox for thumbnail is true we execute the code to get a thumbnail! 
@@ -164,14 +229,24 @@ export class PageComponent implements OnInit {
       }
     })
   }
+  //#endregion
 
   updatePage(){
     
+    const update: Update = this.pageForm.value;
+    this.db.updateDatabase(this.page.id, update).finally(()=>{
+      const config: MatSnackBarConfig = { duration: 1000, panelClass: 'center'};
+      this.popUp.open("✔️ Saved!", undefined, config);
+    }).catch(()=>{
+       const config: MatSnackBarConfig = { duration: 1000, panelClass: 'center'};
+       this.popUp.open("⚠️ Something went wrong!", undefined, config);
+     })
 
+  }
 
-    const config: MatSnackBarConfig = { duration: 1000, panelClass: 'center'};
-    this.popUp.open("Saved!", undefined, config);
+  goTo(left: boolean){
 
-
+    if (left) this.router.navigate(['updates', +this.pageNumber - 1])
+    else this.router.navigate(['updates', +this.pageNumber + 1])
   }
 }

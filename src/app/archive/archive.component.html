@@ -2,17 +2,25 @@
     <div class="insidewrap">
         <div class="title">Archive</div>
         <div class="underline"></div>
-        <div *ngFor="let chapter of chapters | async" class="chapters">
-            <div (click)="chapterClick(chapter.name)" class="ctitle">{{chapter.name}}</div>
-            
-            <!-- Each page could show a small thumbnail on hover -->
-            <div *ngIf="chpsVisible.get(chapter.name)" class="pcontainer">
-                <a *appRepeat="[chapter.start, chapter.length]; let i" > 
-                    <div class="pages">{{i}}</div>
-                </a>
+        <button class="add" mat-mini-fab color="primary"><mat-icon>add</mat-icon></button>
+        <div class="chapterWrap" *ngFor="let chapter of chapters | async | keyvalue ">
+                        
+            <div  class="chapters">
+
+                <div (click)="chapterClick(chapter.value.name)" class="ctitle">{{chapter.value.name}}</div>
+                
+                <!-- Each page could show a small thumbnail on hover -->
+                <div *ngIf="chpsVisible.get(chapter.value.name)" class="pcontainer">
+                    <a (click)="goTo(page.id)" *ngFor="let page of pages | async" > 
+                        <div *ngIf="page.chapter == 'chapter' + chapter.key" class="pages">{{page.id}}</div>
+                    </a>
                 </div>
+                
+            </div>
             
+        
         </div>
+        
     </div>
 </div>
 

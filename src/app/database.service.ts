@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ImageToResize } from './image-to-resize';
 import { ResizedImage } from './resized-image';
@@ -22,6 +22,10 @@ export class DatabaseService {
 
 
 
+  public getAllUpdates(){
+    return this.db.list('updates', ref => ref.orderByChild('id')).valueChanges();
+  }
+
   /**
    * Returns the number of items in the database within provided argument.
    * @param {string} request The type of item to count.
@@ -39,25 +43,47 @@ export class DatabaseService {
     );
   }
 
+  //#region Archive
   /**
   * Returns a list of chapters which contain the chapter name
   * and the length/number of pages.
   * @returns {Observable<any>}
   */
-  public getChapters(): Observable<any>
+  public getChapters(): Observable<any[]>
   {
-    return this.db.list('/chapters').valueChanges();
+    return this.db.list('chapters').valueChanges();
   }
+  
+  increaseChapterNo(index: number, clength: number){
+    this.db.object('chapters/chapter' + index).update({length: clength + 1});
+  }
+
+  decreaseChapterNo(index: number, clength: number){
+    this.db.object('chapters/chapter' + index).update({length: clength - 1});
+  }
+  //#endregion Archive
 
   /**
   * Returns whichever page you pass in the argument. 
   * @param {number} page The page to return.
   * @returns {Observable<Update[]>} 
   */
-  getPage(page: number): Observable<Update[]>
+  getPage(page: number): Observable<Update>
   {
-    return this.db.list<Update>('/updates', ref => ref.orderByChild('id').equalTo(page)).valueChanges();
+    return this.db.object<Update>('/updates/update' + page).valueChanges();
   };
+
+  /**
+   * Creates a blank new page to be filled.
+   * @param {number} id The id to create the new page with. 
+   * @returns 
+   */
+  newPage(id: number): Observable<Update> 
+  {
+    return from(this.db.list<Update>('updates').update('update' + id, new Update(id)).finally())
+          .pipe(
+            switchMap(()=> this.getPage(id)));
+  }
 
   /**
   * Returns the last page uploaded to the database.
@@ -65,7 +91,23 @@ export class DatabaseService {
   */
   getLast(): Observable<Update[]>
   {
-    return this.db.list('/updates', ref => ref.orderByChild('id').limitToLast(1)).valueChanges();
+    return this.db.list<Update>('/updates', ref => ref.orderByChild('id').limitToLast(1)).valueChanges();
+  }
+
+  /**
+   * Deletes the imgurl or thumbnail depending on the type sent.
+   * @param {number} page The page to delete the Image from.
+   * @param {string} type The type of image to delete. Thumbnail or Imgurl? 
+   * @returns {Promise<void>} Returns a void promise.
+   */
+  async deleteImage(page: number, type: string){
+    return await this.db.object('updates/update' + page + '/' + type).remove();
+  }
+
+
+  async updateDatabase(page:number, update: Update){
+    const itemsRef = this.db.list('updates');
+    return await itemsRef.update('update' + page, update);
   }
 
   /**
@@ -78,6 +120,7 @@ export class DatabaseService {
     const uploading: UploadingImage = {path: storagePath, upload: this.storage.upload(storagePath, file)}
     return uploading;
   }
+
   getImageUrl(path: string) {
     return this.storage.ref(path);
   }
@@ -114,6 +157,7 @@ export class DatabaseService {
     const itemsRef = this.db.list('updates');
     itemsRef.update('update' + page, {thumbnail: url});
   }
+
 
   base64ToBlob(base64, mime) 
   {

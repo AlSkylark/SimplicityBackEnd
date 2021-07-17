@@ -2,7 +2,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px;
+    margin: 0px 20px;
+}
+.topbuttons{
+    margin: 3px;
+}
+.topbuttons button{
+    margin: 3px;
 }
 .card{ width: 70%; }
 
@@ -68,7 +74,7 @@
     height: auto;
 }
 .imgImg{
-    max-height: 550px;
+    max-height: 300px;
 }
 
 .imgUpload button{
@@ -94,4 +100,6 @@
     .imgImg{
         max-height: 300px;
     }
+    .image.comic{ margin-right: 0px; }
+    .image.thumbnail{ margin-left: 0px; }
 }

@@ -1,10 +1,17 @@
 <div class="container">
-    
+
+    <div class="topbuttons">
+        <button *ngIf="pageNumber != '1'" mat-raised-button color="primary" (click)="goTo(true)"> <mat-icon>arrow_back</mat-icon> </button>
+        <button *ngIf="pageNumber != '' + lastPage" mat-raised-button color="primary" (click)="goTo(false)"> <mat-icon>arrow_forward</mat-icon> </button>
+    </div>
+
     <mat-card class="card">
-        <mat-card-title>Page {{pageNumber}}</mat-card-title>
+        <mat-card-title>{{pageTitle}}</mat-card-title>
+        
         
         <form [formGroup]="pageForm">
-        <mat-card-content class="content">
+            
+            <mat-card-content class="content">
             
             <mat-form-field appearance="outline" class="id">
                 <mat-label>Id</mat-label>
@@ -47,7 +54,7 @@
                             <button mat-flat-button color="primary" (click)="openUpload('Thumbnail')">
                                 <mat-icon>file_upload</mat-icon>
                             </button>
-                            <mat-progress-bar *ngIf="isThumbUploading" mode="determinate" value="{{thumbprogress | async}}"></mat-progress-bar>
+                            <mat-progress-bar mode="indeterminate" *ngIf="isThumbUploading"></mat-progress-bar>
                         </div>
                         <mat-spinner *ngIf="page.thumbnail && thumbLoading"></mat-spinner>
                         <img *ngIf="page.thumbnail" [hidden]="thumbLoading" (load)="thumbLoading = false" (click)="openUpload('Thumbnail')" src="{{page.thumbnail}}" alt="{{page.alt}}">
@@ -58,19 +65,27 @@
                     <mat-label>Thumbnail URL</mat-label>
                     <input matInput class="rtl" formControlName="thumbnail" value="{{page.thumbnail}}">
                 </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Chapter</mat-label>
+                    <mat-select formControlName="chapter" [(value)]="selected">
+                        <mat-option value="none">-- None Assigned --</mat-option>
+                        <mat-option *ngFor="let chapter of chapterList | async | keyvalue"  
+                        value="chapter{{chapter.key}}">{{chapter.value.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
 
             <mat-form-field appearance="outline" class="caption">
                 <mat-label>Caption</mat-label>
-                <textarea matInput formControlName="caption">{{page.caption}}</textarea>
+                <textarea matInput matTextareaAutosize formControlName="caption" value="{{page.caption}}"></textarea>
             </mat-form-field>
         
 
 
 
             <div class="save">
-                <button mat-raised-button color="primary" class="btn" (click)="updatePage()">Update</button>
-                <button mat-stroked-button color= "warn" class="btn">Cancel</button>
+                <button mat-raised-button color="primary" class="btn" (click)="updatePage()">Save</button>
             </div>
 
         </mat-card-content>
