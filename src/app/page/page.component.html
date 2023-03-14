@@ -2,7 +2,7 @@
 
     <div class="topbuttons">
         <button *ngIf="pageNumber != '1'" mat-raised-button color="primary" (click)="goTo(true)"> <mat-icon>arrow_back</mat-icon> </button>
-        <button *ngIf="pageNumber != '' + lastPage" mat-raised-button color="primary" (click)="goTo(false)"> <mat-icon>arrow_forward</mat-icon> </button>
+        <button *ngIf="pageNumber != '' + lastPage && pageNumber != 'add'" mat-raised-button color="primary" (click)="goTo(false)"> <mat-icon>arrow_forward</mat-icon> </button>
     </div>
 
     <mat-card class="card">

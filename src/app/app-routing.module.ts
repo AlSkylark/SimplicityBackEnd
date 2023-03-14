@@ -13,9 +13,9 @@ import { PageComponent } from './page/page.component';
 import { UploadComponent } from './upload/upload.component';
 
 
-export const routingComponents = 
+export const routingComponents =
   [
-    MainComponent, 
+    MainComponent,
     LoadingComponent,
     StatusComponent,
     LogsComponent,
@@ -28,19 +28,19 @@ export const routingComponents =
 
 const routes: Routes = [
   {
-  path:'', component: routingComponents[0], canActivate:[AuthGuard],
-  children:
-    [
-      {path:'status', component: routingComponents[2]},
-      {path:'updates', component: routingComponents[5]},
-      {path:'updates/:page', component: routingComponents[8]},
-      {path:'archive', component: routingComponents[4]},
-      {path:'logs', component: routingComponents[3]},
-    ]
+    path: '', component: routingComponents[0], canActivate: [AuthGuard],
+    children:
+      [
+        { path: 'status', component: routingComponents[2] },
+        { path: 'updates', component: routingComponents[5] },
+        { path: 'updates/:page', component: PageComponent },
+        { path: 'archive', component: routingComponents[4] },
+        { path: 'logs', component: routingComponents[3] },
+      ]
   },
-  {path:'login', component: routingComponents[6]},
-  {path: 'test', component: UploadComponent},
-  {path:'**', component: routingComponents[7]}
+  { path: 'login', component: routingComponents[6] },
+  { path: 'test', component: UploadComponent },
+  { path: '**', component: routingComponents[7] }
 ];
 
 @NgModule({

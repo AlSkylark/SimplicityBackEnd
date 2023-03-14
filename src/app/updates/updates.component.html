@@ -3,9 +3,12 @@
         
         <mat-card-title class="title" >
              <div class="title-text" (click)="chapterClick(chapter.value.name)">{{chapter.value.name}}</div>
-             <button mat-mini-fab color="basic">
-             <mat-icon class="title-add">add</mat-icon> 
-             </button>
+             <a href="/updates/add">             
+                <button mat-mini-fab color="basic">
+                    <mat-icon class="title-add">add</mat-icon> 
+                </button>
+            </a>
+
         </mat-card-title> 
         
         <mat-card-content *ngIf="chpsVisible.get(chapter.value.name)" class="content">

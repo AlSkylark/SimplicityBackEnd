@@ -1,0 +1,21 @@
+.titlecontainer{
+    display: flex;
+    flex-direction: row;
+}
+.titlecontainer *{
+    margin: 2px;
+}
+.editingcontainer{
+    max-width: 500px;
+    min-width: 100px;
+    margin-left: 30px;
+    padding: 5px;
+    border: 1px solid black;
+}
+.logForm{
+    display: flex;
+    flex-direction: column;
+}
+.logcontent {
+    resize: vertical;
+}

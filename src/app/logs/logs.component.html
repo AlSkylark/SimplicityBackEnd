@@ -1,1 +1,25 @@
-<p>logs works!</p>
+<div class="title">Log List</div>
+<div class="loglist">
+    <ul>
+        <li class="log" *ngFor="let log of logs | async">
+            <div class="titlecontainer">            
+                <div class="logname">{{log.dateid}}</div>
+                <div class="logdate">{{log.date}}</div>
+                <div class="editbutton" (click)="openEdit(log)">Edit</div>
+            </div>
+            <div class="editingcontainer" *ngIf="editsVisible.get(log.id)">
+                <form [formGroup]="logForm" class="logForm">
+                    <label for="logid">ID</label>
+                    <input type="text" name="logid" formControlName="id" value="{{log.id}}">
+                    <label for="logname">Log Name / dateid</label>
+                    <input type="text" name="logname" formControlName="dateid" value="{{log.dateid}}">
+                    <label for="logdate">Date</label>
+                    <input type="date" name="logdate" formControlName="date" value="{{log.date}}">
+                    <label for="content">Log Content</label>
+                    <textarea name="content" class="logcontent" formControlName="text">{{log.text}}</textarea> 
+                </form>
+                <div class="save" (click)="saveLog()"><button>Save</button></div>
+            </div>
+        </li>
+    </ul>
+</div>
