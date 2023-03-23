@@ -1,105 +1,136 @@
-.container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0px 20px;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0px 20px;
 }
-.topbuttons{
-    margin: 3px;
+.topbuttons {
+  margin: 3px;
 }
-.topbuttons button{
-    margin: 3px;
+.topbuttons button {
+  margin: 3px;
 }
-.card{ width: 70%; }
-
-.content{
-    display: grid; 
-    grid-template-columns: repeat(autofit, 1fr); 
-    gap: 0px 0px; 
-    grid-template-areas: 
-      "id id"
-      "comic thumbnail"
-      "caption caption"
-      "save save"; 
+.card {
+  width: 70%;
 }
 
-.rtl{
-    direction: rtl;
+.content {
+  display: grid;
+  grid-template-columns: repeat(autofit, 1fr);
+  gap: 0px 0px;
+  grid-template-areas:
+    "id id"
+    "comic thumbnail"
+    "caption caption"
+    "save save";
 }
 
-.id { grid-area: id; }
-.idIcon{ 
-    cursor: pointer; 
-    user-select: none; 
-}
-.comic { grid-area: comic; }
-.thumbnail { grid-area: thumbnail; }
-.caption { grid-area: caption; }
-.alt { grid-area: alt; }
-.save { 
-    grid-area: save;
-    justify-self: center;
+.rtl {
+  direction: rtl;
 }
 
-.image{
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    top: -10px;
+.id {
+  grid-area: id;
+}
+.idIcon {
+  cursor: pointer;
+  user-select: none;
+}
+.comic {
+  grid-area: comic;
+}
+.thumbnail {
+  grid-area: thumbnail;
+}
+.caption {
+  grid-area: caption;
+}
+.alt {
+  grid-area: alt;
+}
+.save {
+  grid-area: save;
+  justify-self: center;
 }
 
-.image.comic{ margin-right: 10px; }
-.image.thumbnail{ margin-left: 10px; }
-
-.image mat-form-field{ width: 100%; }
-
-.imgWrap{ margin-bottom: 15px; }
-
-.imgTitle{
-    position: relative;
-    text-align: center;
-    max-width: 80px;
-    top: 10px;
-    left: 8px;
-    background-color: white;
+.image {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: -10px;
 }
 
-.img{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: solid 1px rgb(224, 224, 224);
-    border-radius: 4px;
-    padding: 5px;
-    height: auto;
+.image.comic {
+  margin-right: 10px;
 }
-.imgImg{
-    max-height: 300px;
+.image.thumbnail {
+  margin-left: 10px;
 }
 
-.imgUpload button{
-    width: 80px;
-    height: 80px;
-    margin: 20px;
+.image mat-form-field {
+  width: 100%;
 }
 
-.btn{ margin: 5px; }
+.imgWrap {
+  margin-bottom: 15px;
+}
+
+.imgTitle {
+  position: relative;
+  text-align: center;
+  max-width: 80px;
+  top: 10px;
+  left: 8px;
+  background-color: white;
+}
+
+.img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px rgb(224, 224, 224);
+  border-radius: 4px;
+  padding: 5px;
+  height: auto;
+}
+.imgImg {
+  width: 100%;
+  max-height: 300px;
+}
+
+.imgUpload button {
+  width: 80px;
+  height: 80px;
+  margin: 20px;
+}
+
+.btn {
+  margin: 5px;
+}
 
 @media only screen and (max-width: 1200px) {
-    .content{
-        grid-template-columns: 1fr 1fr; 
-        gap: 0px 0px; 
-        grid-template-areas: 
-          "id id"
-          "comic comic"
-          "thumbnail thumbnail"
-          "caption caption"
-          "save save"; 
-    }
-    .card{ width: 90%; }
-    .imgImg{
-        max-height: 300px;
-    }
-    .image.comic{ margin-right: 0px; }
-    .image.thumbnail{ margin-left: 0px; }
+  .content {
+    grid-template-columns: 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      "id id"
+      "comic comic"
+      "thumbnail thumbnail"
+      "caption caption"
+      "save save";
+  }
+  .card {
+    width: 85vw;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  .imgImg {
+    max-height: 300px;
+  }
+  .image.comic {
+    margin-right: 0px;
+  }
+  .image.thumbnail {
+    margin-left: 0px;
+  }
 }

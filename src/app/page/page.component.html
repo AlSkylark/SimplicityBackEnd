@@ -1,97 +1,164 @@
 <div class="container">
+  <div class="topbuttons">
+    <button
+      *ngIf="pageNumber != '1'"
+      mat-raised-button
+      color="primary"
+      (click)="goTo(true)"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <button
+      *ngIf="pageNumber != '' + lastPage && pageNumber != 'add'"
+      mat-raised-button
+      color="primary"
+      (click)="goTo(false)"
+    >
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </div>
 
-    <div class="topbuttons">
-        <button *ngIf="pageNumber != '1'" mat-raised-button color="primary" (click)="goTo(true)"> <mat-icon>arrow_back</mat-icon> </button>
-        <button *ngIf="pageNumber != '' + lastPage && pageNumber != 'add'" mat-raised-button color="primary" (click)="goTo(false)"> <mat-icon>arrow_forward</mat-icon> </button>
-    </div>
+  <mat-card class="card">
+    <mat-card-title>{{ pageTitle }}</mat-card-title>
 
-    <mat-card class="card">
-        <mat-card-title>{{pageTitle}}</mat-card-title>
-        
-        
-        <form [formGroup]="pageForm">
-            
-            <mat-card-content class="content">
-            
-            <mat-form-field appearance="outline" class="id">
-                <mat-label>Id</mat-label>
-                <input matInput formControlName="id" value="{{page.id}}">
-                <mat-icon class="idIcon" matSuffix (click)="enableId()">{{idIcon}}</mat-icon>
-            </mat-form-field>
+    <form [formGroup]="pageForm">
+      <mat-card-content class="content">
+        <mat-form-field appearance="outline" class="id">
+          <mat-label>Id</mat-label>
+          <input matInput formControlName="id" value="{{ page.id }}" />
+          <mat-icon class="idIcon" matSuffix (click)="enableId()">{{
+            idIcon
+          }}</mat-icon>
+        </mat-form-field>
 
-            <div class="image comic">
-                <div class="imgWrap">
-                    <div class="imgTitle">Image</div>
-                    <div class="img">
-                        <div *ngIf="!page.imgurl" class="imgUpload">
-                            <button  mat-flat-button color="primary" (click)="openUpload('Image')">
-                                <mat-icon>file_upload</mat-icon>
-                            </button>
-                            <mat-progress-bar *ngIf="isUploading" mode="determinate" value="{{progress | async}}"></mat-progress-bar>
-                        </div>
+        <div class="image comic">
+          <div class="imgWrap">
+            <div class="imgTitle">Image</div>
+            <div class="img">
+              <div *ngIf="!page.imgurl" class="imgUpload">
+                <button
+                  mat-flat-button
+                  color="primary"
+                  (click)="openUpload('Image')"
+                >
+                  <mat-icon>file_upload</mat-icon>
+                </button>
+                <mat-progress-bar
+                  *ngIf="isUploading"
+                  mode="determinate"
+                  value="{{ progress | async }}"
+                ></mat-progress-bar>
+              </div>
 
-                        <mat-spinner *ngIf="page.imgurl && imgLoading"></mat-spinner>
-                        <img *ngIf="page.imgurl" [hidden]="imgLoading" (load)="imgLoading = false" (click)="openUpload('Image')" class="imgImg" src="{{page.imgurl}}" alt="{{page.alt}}">
-                    </div> 
-                </div>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Image URL</mat-label>
-                    <input class="rtl" matInput formControlName="imgurl" value="{{page.imgurl}}">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="alt">
-                    <mat-label>Alt</mat-label>
-                    <input matInput formControlName="alt" value="{{page.alt}}">
-                </mat-form-field>
+              <mat-spinner *ngIf="page.imgurl && imgLoading"></mat-spinner>
+              <div>
+                <img
+                  *ngIf="page.imgurl"
+                  [hidden]="imgLoading"
+                  (load)="imgLoading = false"
+                  (click)="openUpload('Image')"
+                  class="imgImg"
+                  src="{{ page.imgurl }}"
+                  alt="{{ page.alt }}"
+                />
+              </div>
             </div>
+          </div>
 
-            <div class="image thumbnail">
-                <div class="imgWrap">
-                    <div class="imgTitle">Thumbnail</div>
-                    <div class="img">
-                        <div *ngIf="!page.thumbnail" class="imgUpload">
-                            <button mat-flat-button color="primary" (click)="openUpload('Thumbnail')">
-                                <mat-icon>file_upload</mat-icon>
-                            </button>
-                            <mat-progress-bar mode="indeterminate" *ngIf="isThumbUploading"></mat-progress-bar>
-                        </div>
-                        <mat-spinner *ngIf="page.thumbnail && thumbLoading"></mat-spinner>
-                        <img *ngIf="page.thumbnail" [hidden]="thumbLoading" (load)="thumbLoading = false" (click)="openUpload('Thumbnail')" src="{{page.thumbnail}}" alt="{{page.alt}}">
-                    </div> 
-                </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Image URL</mat-label>
+            <input
+              class="rtl"
+              matInput
+              formControlName="imgurl"
+              value="{{ page.imgurl }}"
+            />
+          </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Thumbnail URL</mat-label>
-                    <input matInput class="rtl" formControlName="thumbnail" value="{{page.thumbnail}}">
-                </mat-form-field>
+          <mat-form-field appearance="outline" class="alt">
+            <mat-label>Alt</mat-label>
+            <input matInput formControlName="alt" value="{{ page.alt }}" />
+          </mat-form-field>
+        </div>
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Chapter</mat-label>
-                    <mat-select formControlName="chapter" [(value)]="selected">
-                        <mat-option value="none">-- None Assigned --</mat-option>
-                        <mat-option *ngFor="let chapter of chapterList | async | keyvalue"  
-                        value="chapter{{chapter.key}}">{{chapter.value.name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
+        <div class="image thumbnail">
+          <div class="imgWrap">
+            <div class="imgTitle">Thumbnail</div>
+            <div class="img">
+              <div *ngIf="!page.thumbnail" class="imgUpload">
+                <button
+                  mat-flat-button
+                  color="primary"
+                  (click)="openUpload('Thumbnail')"
+                >
+                  <mat-icon>file_upload</mat-icon>
+                </button>
+                <mat-progress-bar
+                  mode="indeterminate"
+                  *ngIf="isThumbUploading"
+                ></mat-progress-bar>
+              </div>
+
+              <mat-spinner *ngIf="page.thumbnail && thumbLoading"></mat-spinner>
+
+              <div>
+                <img
+                  *ngIf="page.thumbnail"
+                  [hidden]="thumbLoading"
+                  (load)="thumbLoading = false"
+                  (click)="openUpload('Thumbnail')"
+                  class="imgImg"
+                  src="{{ page.thumbnail }}"
+                  alt="{{ page.alt }}"
+                />
+              </div>
             </div>
+          </div>
 
-            <mat-form-field appearance="outline" class="caption">
-                <mat-label>Caption</mat-label>
-                <textarea matInput matTextareaAutosize formControlName="caption" value="{{page.caption}}"></textarea>
-            </mat-form-field>
-        
+          <mat-form-field appearance="outline">
+            <mat-label>Thumbnail URL</mat-label>
+            <input
+              matInput
+              class="rtl"
+              formControlName="thumbnail"
+              value="{{ page.thumbnail }}"
+            />
+          </mat-form-field>
 
+          <mat-form-field appearance="outline">
+            <mat-label>Chapter</mat-label>
+            <mat-select formControlName="chapter" [(value)]="selected">
+              <mat-option value="none">-- None Assigned --</mat-option>
+              <mat-option
+                *ngFor="let chapter of chapterList | async | keyvalue"
+                value="chapter{{ chapter.key }}"
+                >{{ chapter.value.name }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
 
+        <mat-form-field appearance="outline" class="caption">
+          <mat-label>Caption</mat-label>
+          <textarea
+            matInput
+            matTextareaAutosize
+            formControlName="caption"
+            value="{{ page.caption }}"
+          ></textarea>
+        </mat-form-field>
 
-            <div class="save">
-                <button mat-raised-button color="primary" class="btn" (click)="updatePage()">Save</button>
-            </div>
-
-        </mat-card-content>
-
+        <div class="save">
+          <button
+            mat-raised-button
+            color="primary"
+            class="btn"
+            (click)="updatePage()"
+          >
+            Save
+          </button>
+        </div>
+      </mat-card-content>
     </form>
-
-    </mat-card>
-
+  </mat-card>
 </div>

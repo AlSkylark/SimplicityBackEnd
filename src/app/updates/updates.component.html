@@ -1,24 +1,40 @@
 <div class="container">
-    <mat-card *ngFor="let chapter of chapters | async | keyvalue" class="chapters" > 
-        
-        <mat-card-title class="title" >
-             <div class="title-text" (click)="chapterClick(chapter.value.name)">{{chapter.value.name}}</div>
-             <a href="/updates/add">             
-                <button mat-mini-fab color="basic">
-                    <mat-icon class="title-add">add</mat-icon> 
-                </button>
-            </a>
+  <mat-card
+    *ngFor="let chapter of chapters | async | keyvalue"
+    class="chapters"
+  >
+    <mat-card-title class="title">
+      <div class="title-text" (click)="chapterClick(chapter.value.name)">
+        {{ chapter.value.name }}
+      </div>
+      <a href="/updates/add">
+        <button mat-mini-fab color="basic">
+          <mat-icon class="title-add">add</mat-icon>
+        </button>
+      </a>
+    </mat-card-title>
 
-        </mat-card-title> 
-        
-        <mat-card-content *ngIf="chpsVisible.get(chapter.value.name)" class="content">
-            <div class="wrap-for-list">
-                <div *ngFor="let page of pages | async">
-                    <button mat-flat-button color="basic" *ngIf="page.chapter == 'chapter' + chapter.key" class="list" (click)=pagesClick(page.id)>
-                        {{page.id}}
-                    </button>
-                </div>
-            </div> 
-        </mat-card-content>
-    </mat-card>
+    <mat-card-content
+      *ngIf="chpsVisible.get(chapter.value.name)"
+      class="content"
+    >
+      <div class="wrap-for-list">
+        <div *ngFor="let page of pages | async">
+          <button
+            mat-flat-button
+            color="basic"
+            *ngIf="page.chapter == 'chapter' + chapter.key"
+            class="list"
+            (click)="
+              pagesClick(
+                page.id % 1 === 0 ? page.id : ('' + page.id).replace('.', '-')
+              )
+            "
+          >
+            {{ page.id }}
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

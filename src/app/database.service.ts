@@ -25,7 +25,7 @@ export class DatabaseService {
     const itemsRef = this.db.list('updates');
     // console.log(update); return false;
     if (this.validateUpdate(update))
-      return await itemsRef.update('update' + page, update);
+      return await itemsRef.update(('update' + page).replace(".", ","), update);
     throw new Error("Testing");
 
   }
@@ -62,7 +62,7 @@ export class DatabaseService {
   * @returns {Observable<Update[]>} 
   */
   getPage(page: number): Observable<Update> {
-    return this.db.object<Update>('/updates/update' + page).valueChanges();
+    return this.db.object<Update>(('/updates/update' + page).replace(".", ",")).valueChanges();
   };
 
   /**

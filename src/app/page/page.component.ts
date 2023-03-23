@@ -62,7 +62,7 @@ export class PageComponent implements OnInit {
 
     this.route.params.subscribe((page: Params) => {
 
-      this.pageNumber = page['page'];
+      this.pageNumber = page['page'].replace("-", ".");
 
       this.pageForm = this.fb.group({
         alt: '',
@@ -242,9 +242,9 @@ export class PageComponent implements OnInit {
       if (this.pageNumber == "add") {
         this.router.navigate(['updates', +this.lastPage]);
       } else {
-        this.router.navigate(['updates', +this.pageNumber - 1]);
+        this.router.navigate(['updates', Math.floor(+this.pageNumber) - 1]);
       }
     }
-    else this.router.navigate(['updates', +this.pageNumber + 1]);
+    else this.router.navigate(['updates', Math.floor(+this.pageNumber) + 1]);
   }
 }
